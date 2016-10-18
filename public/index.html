@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Web push notifications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Web manifest for service workers -->
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+	<p>Send a POST Request to localhost:3000/messages with JSON body: {"technician_id": 1}</p>
+	<script>
+		// Set technician id to receive push notifications
+		var technicianId = 1;
+	</script>
+	<script type="text/javascript" src="/js/app.js"></script>
+</body>
+</html>
