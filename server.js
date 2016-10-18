@@ -70,6 +70,8 @@ app.post("/subscription", function(req, res, next) {
 // Dispatch push notification to service worker
 //*********************************************************
 app.post("/message", function(req, res, next) {
+  
+  console.log('received request')
 
   // Get http request body info	
   var technicianId = req.body.technician_id;
