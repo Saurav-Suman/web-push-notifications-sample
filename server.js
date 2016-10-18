@@ -39,10 +39,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 
-
 //============================================================================================
 // ROUTES
 //============================================================================================
+
+//*********************************************************
+// Log info on server side
+//*********************************************************
+app.get('/', function(req, res, next) {
+	if(pushSubscription) {
+		console.log('The following subscription info is set on the server: ', pushSubscription);
+	}
+});
 
 //*********************************************************
 // Subscribe a service worker to server
@@ -70,9 +78,6 @@ app.post("/subscription", function(req, res, next) {
 // Dispatch push notification to service worker
 //*********************************************************
 app.post("/message", function(req, res, next) {
-  
-  console.log('received request')
-
   // Get http request body info	
   var technicianId = req.body.technician_id;
   /* Payload to send with push notification */
@@ -100,7 +105,9 @@ app.post("/message", function(req, res, next) {
   }
 });
 
-// Start nodejs server
+//============================================================================================
+// START SERVER
+//============================================================================================
 app.listen(process.env.PORT || 3000, function(){
   console.log("App listening on localhost:3000");
 });
