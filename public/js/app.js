@@ -18,6 +18,7 @@ if ("serviceWorker" in navigator) {
 
                     /* If a subscription was found, return it */
                     if (subscription) {
+                        // IF USER IS SUBSCRIBED WE SHOULD ALSO CHECK IF THEY ARE REGISTERED IN THE DATABASE!!!!!
                         console.log('User is already subscribed.')
                         return subscription;
                     }
@@ -45,8 +46,19 @@ if ("serviceWorker" in navigator) {
                                 body: JSON.stringify({
                                     endpoint: subscription.endpoint,
                                     key: key,
-                                    authSecret: authSecret
+                                    authSecret: authSecret,
+                                    technician_id: technicianId
                                 })
+                            })
+                            .then(function(res) {
+                                if(res.ok) {
+                                    return res.json();
+                                } else {
+                                    console.log('Network response was not ok.')
+                                }
+                            })
+                            .then(function(json) {
+                                console.log(json);
                             });
                     });
                 });
