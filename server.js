@@ -92,6 +92,11 @@ app.post("/message", function(req, res, next) {
 		       message: 'Push notification has been sent.'
 		   });
     });
+  } else {
+  	res.status(400).json({
+  		status: 'failure',
+  		message: 'No subscription info has been saved to server. Please ensure service worker has been subscribed.'
+  	});
   }
 });
 
