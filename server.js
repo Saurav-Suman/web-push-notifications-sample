@@ -49,6 +49,8 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 app.get('/', function(req, res, next) {
 	if(pushSubscription) {
 		console.log('The following subscription info is set on the server: ', pushSubscription);
+	} else {
+		console.log('No subscription info saved yet.')
 	}
 });
 
