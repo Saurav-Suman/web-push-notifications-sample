@@ -9,6 +9,14 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const path = require("path");
 
+// CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+	next();
+});
+
 // Web push module
 const webPush = require('web-push');
 // Firebase cloud messaging API key
@@ -29,6 +37,8 @@ app.use(bodyParser.urlencoded({'extended' : 'true'}));
 app.use(bodyParser.json());
 // Parse application/vnd.api+json as json
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
+
+
 
 //============================================================================================
 // ROUTES
