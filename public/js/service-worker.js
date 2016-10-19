@@ -35,6 +35,6 @@ self.addEventListener("push", function(event){
 //*********************************************************
 self.addEventListener("notificationclick", function(event){
     event.waitUntil(
-        clients.openWindow("http://localhost:3000/")
+        clients.openWindow("/")
     );
 });
