@@ -49,11 +49,11 @@ var options = {
 var pgp = require('pg-promise')(options);
 var connectionString;
 
-var developmentMode = false;
+var developmentMode = true;
 
 if(developmentMode) {
 	// Enter postgres credentials
-    connectionString = 'postgres://postgres:password@localhost:5432/push-notifications';
+    connectionString = 'postgres://postgres:tuonghuan@localhost:5432/push-notifications';
 } else {
     connectionString = process.env.DATABASE_URL;
     pgp.pg.defaults.ssl = true;
@@ -113,20 +113,34 @@ app.post("/subscription", function(req, res, next) {
   };
   console.log('Received the subscription info: ', pushSubscription);
 
-  // Save value in database
-  db.none('INSERT INTO gcm_registrations (technician_id, subscription_info) VALUES ($1, $2)', 
-  	[req.body.technician_id, pushSubscription])
-        .then(function(data) {
-          // Saves the endpoint and returns a 200 ok status
-		  res.status(200)
-		  	.json({
-		  		status: 'success',
-		  		message: 'Subscription info has been saved.'
-		  	});  
-        })
-        .catch(function(err) {
-            return next(err);
-        });
+  // Check if subscription exists in database
+  db.one('SELECT COUNT(*) FROM gcm_registrations WHERE technician_id = $1 ' +
+  	'AND subscription_info = $2', [req.body.technician_id, pushSubscription])
+  	.then(function(data) {
+
+  		if(data.count == 0) {	
+		  // Save value in database
+		  db.none('INSERT INTO gcm_registrations (technician_id, subscription_info) VALUES ($1, $2)', 
+		  	[req.body.technician_id, pushSubscription])
+		        .then(function(data) {
+		          // Saves the endpoint and returns a 200 ok status
+				  res.status(200)
+				  	.json({
+				  		status: 'success',
+				  		message: 'Subscription info has been saved.'
+				  	});  
+		        })
+		        .catch(function(err) {
+		            return next(err);
+		        });
+  		} else {
+  			res.status(200)
+			  	.json({
+			  		status: 'success',
+			  		message: 'Subscription info already exists in database.'
+			  	}); 
+		}
+  	});
 });
 
 //*********************************************************
