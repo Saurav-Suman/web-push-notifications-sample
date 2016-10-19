@@ -18,6 +18,11 @@ if("serviceWorker" in navigator) {
 
                     /* If a subscription was found, return it */
                     if(subscription) {
+
+                        console.log('User already subscribed.');
+                        /* Send message to service worker to set the technician id */
+                        registration.active.postMessage(JSON.stringify({technician_id: technicianId}));
+
                         /* If user already subscribed on client side we must ensure the subscription is in database */
                         return sendSubscriptionInfo(subscription, technicianId)
                             .then(function(res) {
@@ -36,7 +41,7 @@ if("serviceWorker" in navigator) {
                     return registration.pushManager.subscribe({userVisibleOnly: true})
                         .then(function(subscription) {
 
-                            console.log('Subscribing the user.')
+                            console.log('Subscribing the user.');
                             /* Send message to service worker to set the technician id */
                             registration.active.postMessage(JSON.stringify({technician_id: technicianId}));
 
