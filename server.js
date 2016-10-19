@@ -53,7 +53,7 @@ var developmentMode = false;
 
 if(developmentMode) {
 	// Enter postgres credentials
-    connectionString = 'postgres://postgres:tuonghuan@localhost:5432/push-notifications';
+    connectionString = 'postgres://postgres:password@localhost:5432/push-notifications';
 } else {
     connectionString = process.env.DATABASE_URL;
     pgp.pg.defaults.ssl = true;

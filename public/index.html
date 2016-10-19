@@ -8,10 +8,39 @@
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-	<p>Send a POST Request to https://chrome-push-notification.herokuapp.com/messages with JSON body: {"technician_id": 1}</p>
+	<p>
+		Send a POST Request to <br>
+		<b>https://chrome-push-notification.herokuapp.com/message</b> <br> 
+		with JSON body: {"technician_id": 1}
+	</p>
+	<p>Or click the button below to send to all subscribers: </p>
+	<button id="send-push-notifications">Send Notification</button>
 	<script>
 		// Set technician id to receive push notifications
 		var technicianId = 1;
+
+		// Fire push notification on button click
+		document.getElementById('send-push-notifications').onclick = function() {
+			fetch("/message", {
+		        method: "POST",
+		        headers: {
+		            "Content-type": "application/json"
+		        },
+		        body: JSON.stringify({"technician_id":1})
+		    })
+		    .then(function(res) {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log('Network response was not ok.')
+                }
+            })
+            .then(function(json) {
+                console.log(json);
+            });
+		}          
+
+		// Send a
 	</script>
 	<script type="text/javascript" src="/js/app.js"></script>
 </body>

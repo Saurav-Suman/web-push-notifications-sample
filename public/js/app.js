@@ -47,7 +47,7 @@ if("serviceWorker" in navigator) {
 
                             /* Save subscription to db */
                             return sendSubscriptionInfo(subscription, technicianId)
-                                 .then(function(res) {
+                                .then(function(res) {
                                     if(res.ok) {
                                         return res.json();
                                     } else {
