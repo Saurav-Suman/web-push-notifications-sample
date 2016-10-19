@@ -1,15 +1,24 @@
 //============================================================================================
 // SERVICE WORKER
 //============================================================================================
+/* For local storage */
+importScripts('localforage.js');
+
+//*********************************************************
+// First event by service worker 
+//*********************************************************
+self.addEventListener('install', function(event) {
+    console.log('Installing new service worker...');
+    /* This will kick out the current active worker and activate itself */
+    //self.skipWaiting();
+});
 
 //*********************************************************
 // Receive messages
 //*********************************************************
 self.addEventListener('message', function(event){
-    /* Set the technician id that created this service worker */
+    /* Set the data sent to this service worker */
     var data = JSON.parse(event.data);
-    console.log("SW received technician id: " + data.technician_id);
-    self.technician_id = data.technician_id;
 });
 
 //*********************************************************
@@ -19,19 +28,23 @@ self.addEventListener("push", function(event){
     /* Retrieves the payload sent */
     var payload = event.data ? JSON.parse(event.data.text()) : 'no payload';
 
-    console.log('push debugging payload: ');
-    console.log(payload)
-    // Temporarily hardcode self.technician_id = 1 to see if it fixes issue
+    console.log('Received push event with payload: ', payload);
 
-    /* Only send push notification for the selected technician */
-    if(payload.technician_id == 1) {
-        /* Show a new message notification */
-        event.waitUntil(
-            self.registration.showNotification("Alert", {
-                body: "You have been assigned to a customer!"
-            })
-        );
-    }
+    // Get techId set from local storage
+    event.waitUntil(localforage.getItem('key')
+        .then(function(value) {
+            /* Only send push notification for the selected technician */
+            if(payload.technician_id == value) {
+                /* Show a new message notification */
+                self.registration.showNotification("Alert", {
+                    body: "You have been assigned to a customer!"
+                })
+            }
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+    );
 });
 
 //*********************************************************

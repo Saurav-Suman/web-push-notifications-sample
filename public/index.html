@@ -15,6 +15,9 @@
 	</p>
 	<p>Or click the button below to send to all subscribers: </p>
 	<button id="send-push-notifications">Send Notification</button>
+
+	<!-- Localforage for offline storage -->
+	<script src="/js/localforage.js"></script>
 	<script>
 		// Set technician id to receive push notifications
 		var technicianId = 1;
@@ -39,9 +42,8 @@
                 console.log(json);
             });
 		}          
-
-		// Send a
 	</script>
+	<!-- Install our service worker -->
 	<script type="text/javascript" src="/js/app.js"></script>
 </body>
 </html>
