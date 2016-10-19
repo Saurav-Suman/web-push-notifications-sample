@@ -123,6 +123,7 @@ app.post("/subscription", function(req, res, next) {
 		  db.none('INSERT INTO gcm_registrations (technician_id, subscription_info) VALUES ($1, $2)', 
 		  	[req.body.technician_id, pushSubscription])
 		        .then(function(data) {
+		          console.log('Subscription info has been saved.');
 		          // Saves the endpoint and returns a 200 ok status
 				  res.status(200)
 				  	.json({
@@ -134,6 +135,7 @@ app.post("/subscription", function(req, res, next) {
 		            return next(err);
 		        });
   		} else {
+			console.log('Subscription info already exists in database.');
   			res.status(200)
 			  	.json({
 			  		status: 'success',
