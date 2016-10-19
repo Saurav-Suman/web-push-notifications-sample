@@ -19,8 +19,12 @@ self.addEventListener("push", function(event){
     /* Retrieves the payload sent */
     var payload = event.data ? JSON.parse(event.data.text()) : 'no payload';
 
+    console.log('push debugging payload: ');
+    console.log(payload)
+    // Temporarily hardcode self.technician_id = 1 to see if it fixes issue
+
     /* Only send push notification for the selected technician */
-    if(payload.technician_id == self.technician_id) {
+    if(payload.technician_id == 1) {
         /* Show a new message notification */
         event.waitUntil(
             self.registration.showNotification("Alert", {
